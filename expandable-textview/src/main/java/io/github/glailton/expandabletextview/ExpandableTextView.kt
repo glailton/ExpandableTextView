@@ -25,7 +25,7 @@ import io.github.glailton.expandabletextview.Constants.Companion.EMPTY_SPACE
 import io.github.glailton.expandabletextview.Constants.Companion.READ_LESS
 import io.github.glailton.expandabletextview.Constants.Companion.READ_MORE
 
-open class ExpandableTextView @JvmOverloads constructor(
+class ExpandableTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet,
     defStyleAttr: Int = R.attr.expandableTextView) : AppCompatTextView(context, attrs, defStyleAttr),
@@ -33,18 +33,16 @@ open class ExpandableTextView @JvmOverloads constructor(
 
     private var isCollapsing: Boolean = false
 //    private lateinit var mAnimator: ValueAnimator
-    private var mOriginalText: CharSequence? = null
-    private var mCollapsedLines: Int? = null
+    private var mOriginalText: CharSequence? = ""
+    private var mCollapsedLines: Int? = 0
     private var mReadMoreText: CharSequence = READ_MORE
     private var mReadLessText: CharSequence = READ_LESS
     private var isExpanded: Boolean = false
-    private var mAnimationDuration: Int? = null
-    private var foregroundColor: Int? = null
-    private var mEllipsizeText: String? = null
-    private var initialText: String? = null
-    private var isUnderlined: Boolean? = null
-    private var mEllipsizeTextColor: Int? = null
-    private var textClickableSpan: TextClickableSpan = TextClickableSpan()
+    private var mAnimationDuration: Int? = 0
+    private var foregroundColor: Int? = 0
+    private var initialText: String? = ""
+    private var isUnderlined: Boolean? = false
+    private var mEllipsizeTextColor: Int? = 0
 
     private lateinit var visibleText: String
 
@@ -80,7 +78,7 @@ open class ExpandableTextView @JvmOverloads constructor(
             return
         }
 
-        isExpanded = !isExpanded!!
+        isExpanded = !isExpanded
 
         maxLines = if (!isExpanded) {
             mCollapsedLines!!
@@ -102,8 +100,8 @@ open class ExpandableTextView @JvmOverloads constructor(
 
             addListener(object : Animator.AnimatorListener {
                 override fun onAnimationEnd(animation: Animator?) {
-                    if (!isExpanded!!)
-                        setEllipsizedText(isExpanded!!)
+                    if (!isExpanded)
+                        setEllipsizedText(isExpanded)
                 }
 
                 override fun onAnimationRepeat(animation: Animator?) {}
@@ -112,7 +110,7 @@ open class ExpandableTextView @JvmOverloads constructor(
             })
         }
 
-        setEllipsizedText(isExpanded!!)
+        setEllipsizedText(isExpanded)
     }
 
     override fun setText(text: CharSequence?, type: BufferType?) {
@@ -129,12 +127,11 @@ open class ExpandableTextView @JvmOverloads constructor(
                 mReadMoreText = getString(R.styleable.ExpandableTextView_readMoreText) ?: READ_MORE
                 mReadLessText = getString(R.styleable.ExpandableTextView_readLessText) ?: READ_LESS
                 foregroundColor = getColor(R.styleable.ExpandableTextView_foregroundColor, Color.TRANSPARENT)
-                mEllipsizeText = getString(R.styleable.ExpandableTextView_ellipsizeText) ?: READ_MORE
                 isUnderlined = getBoolean(R.styleable.ExpandableTextView_isUnderlined, false)
                 isExpanded = getBoolean(R.styleable.ExpandableTextView_isExpanded, false)
                 mEllipsizeTextColor = getColor(R.styleable.ExpandableTextView_ellipsizeTextColor, Color.BLUE)
             } finally {
-                recycle()
+                this.recycle()
             }
         }
 
@@ -218,15 +215,15 @@ open class ExpandableTextView @JvmOverloads constructor(
 
         val additionalGap = 4
 
-        if (chars + additionalGap < mReadMoreText!!.length) {
+        if (chars + additionalGap < mReadMoreText.length) {
             return
         }
 
         val builder = SpannableStringBuilder(text)
-        builder.replace(end - mReadMoreText!!.length, end + mReadMoreText!!.length, DEFAULT_ELLIPSIZED_TEXT + mReadMoreText + EMPTY_SPACE)
+        builder.replace(end - mReadMoreText.length, end + mReadMoreText.length, DEFAULT_ELLIPSIZED_TEXT + mReadMoreText + EMPTY_SPACE)
         Log.v(TAG, builder.toString())
-        builder.setSpan(ForegroundColorSpan(Color.BLUE), end - mReadMoreText!!.length,
-            end + mReadMoreText!!.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        builder.setSpan(ForegroundColorSpan(Color.BLUE), end - mReadMoreText.length,
+            end + mReadMoreText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         setTextNoCaching(builder)
     }
 
@@ -238,7 +235,7 @@ open class ExpandableTextView @JvmOverloads constructor(
         val text: CharSequence? = mOriginalText
         val builder = SpannableStringBuilder(text).append(EMPTY_SPACE + mReadLessText)
         builder.setSpan(ForegroundColorSpan(Color.BLUE), text!!.length,
-            text.length +  mReadLessText!!.length + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            text.length +  mReadLessText.length + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         setTextNoCaching(builder)
     }
 
@@ -257,13 +254,16 @@ open class ExpandableTextView @JvmOverloads constructor(
             return
 
         text = if (isExpanded || visibleText.isAllTextVisible() || mCollapsedLines!! == COLLAPSED_MAX_LINES) {
-            initialText
+            SpannableStringBuilder(
+                initialText.toString())
+                .append(DEFAULT_ELLIPSIZED_TEXT)
+                .append(mReadLessText.toString().span())
         } else {
             SpannableStringBuilder(
                 visibleText.substring(0,
-                    visibleText.length - (mEllipsizeText.orEmpty().length + DEFAULT_ELLIPSIZED_TEXT.length)))
+                    visibleText.length - (mReadMoreText.toString().length + DEFAULT_ELLIPSIZED_TEXT.length)))
                 .append(DEFAULT_ELLIPSIZED_TEXT)
-                .append(mEllipsizeText.orEmpty().span())
+                .append(mReadMoreText.toString().span())
         }
     }
 
@@ -272,10 +272,12 @@ open class ExpandableTextView @JvmOverloads constructor(
 
         return if (mCollapsedLines!! < COLLAPSED_MAX_LINES) {
             for (i in 0 until mCollapsedLines!!) {
-                if (layout.getLineEnd(i) != 0)
+                if (layout.getLineEnd(i) == 0)
+                    break
+                else
                     end = layout.getLineEnd(i)
             }
-            initialText?.substring(0, end - mEllipsizeText!!.length)!!
+            initialText?.substring(0, end - mReadMoreText.toString().length)!!
         }else {
             initialText!!
         }

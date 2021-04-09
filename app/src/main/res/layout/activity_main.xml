@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
 
     <io.github.glailton.expandabletextview.ExpandableTextView
@@ -11,8 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:maxLines="3"
         android:padding="8dp"
+        expandableTextView:collapsedLines="3"
+        expandableTextView:animDuration="500"
+        expandableTextView:readMoreText="Leia mais"
+        expandableTextView:readLessText="Leia menos"
+        expandableTextView:textMode="line"
+        expandableTextView:isExpanded="true"
         android:text="@string/very_long_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,18 +26,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <io.github.glailton.expandabletextview.ExpandableTextView
-        android:id="@+id/not_expand_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:maxLines="3"
-        android:padding="8dp"
-        android:text="@string/short_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/expand_tv"
-        app:layout_constraintVertical_bias="0.0" />
+<!--    <io.github.glailton.expandabletextview.ExpandableTextView-->
+<!--        android:id="@+id/not_expand_tv"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:foreground="?android:attr/selectableItemBackground"-->
+<!--        android:maxLines="3"-->
+<!--        android:padding="8dp"-->
+<!--        android:text="@string/very_long_text"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/expand_tv"-->
+<!--        app:layout_constraintVertical_bias="0.0" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
