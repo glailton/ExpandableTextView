@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ExpandableTextView">
+        <attr name="collapsedLines" format="integer"/>
+        <attr name="animDuration" format="integer"/>
+        <attr name="readMoreText" format="string"/>
+        <attr name="readLessText" format="string"/>
+        <attr name="anchorTextColor" format="color"/>
+        <attr name="anchorPoint" format="integer"/>
+        <attr name="isExpanded" format="boolean"/>
+        <attr name="textMode" format="enum">
+            <enum name="length" value="0"/>
+            <enum name="line" value="1"/>
+        </attr>
+        <attr name="foregroundColor" format="color" />
+        <attr name="ellipsizeText" format="string" />
+        <attr name="isUnderlined" format="boolean" />
+        <attr name="ellipsizeTextColor" format="color" />
+
+<!--        <attr name="expandToggleType" format="enum">-->
+<!--            <enum name="ImageButton" value="0"/>-->
+<!--            <enum name="TextView" value="1"/>-->
+<!--        </attr>-->
+<!--        <attr name="expandableTextId" format="reference"/>-->
+<!--        <attr name="expandCollapseToggleId" format="reference"/>-->
+<!--        <attr name="expandToggleOnTextClick" format="boolean"/>-->
+    </declare-styleable>
+
+    <attr name="expandableTextView" format="reference"/>
+</resources>

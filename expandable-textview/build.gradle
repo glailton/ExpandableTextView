@@ -3,6 +3,14 @@ plugins {
     id 'kotlin-android'
 }
 
+ext {
+    PUBLISH_GROUP_ID = 'io.github.glailton.expandabletextview'
+    PUBLISH_VERSION = '1.0.0'
+    PUBLISH_ARTIFACT_ID = 'expandabletextview'
+}
+
+apply from: "${rootProject.projectDir}/publish-mavencentral.gradle"
+
 android {
     compileSdkVersion 30
 
