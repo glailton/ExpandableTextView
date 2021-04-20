@@ -10,18 +10,14 @@ import android.os.Build
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
-import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.UnderlineSpan
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import io.github.glailton.expandabletextview.Constants.Companion.COLLAPSED_MAX_LINES
 import io.github.glailton.expandabletextview.Constants.Companion.DEFAULT_ANIM_DURATION
 import io.github.glailton.expandabletextview.Constants.Companion.DEFAULT_ELLIPSIZED_TEXT
-import io.github.glailton.expandabletextview.Constants.Companion.EMPTY_SPACE
 import io.github.glailton.expandabletextview.Constants.Companion.READ_LESS
 import io.github.glailton.expandabletextview.Constants.Companion.READ_MORE
 
@@ -31,8 +27,6 @@ class ExpandableTextView @JvmOverloads constructor(
     defStyleAttr: Int = R.attr.expandableTextView) : AppCompatTextView(context, attrs, defStyleAttr),
     View.OnClickListener {
 
-    private var isCollapsing: Boolean = false
-//    private lateinit var mAnimator: ValueAnimator
     private var mOriginalText: CharSequence? = ""
     private var mCollapsedLines: Int? = 0
     private var mReadMoreText: CharSequence = READ_MORE
@@ -47,22 +41,11 @@ class ExpandableTextView @JvmOverloads constructor(
     private lateinit var visibleText: String
 
     override fun onClick(v: View?) {
-//        if (mAnimator.isRunning) {
-//            animatorReverse()
-//            return
-//        }
-//
-//        val endPosition = animateTo()
-//        val startPosition = height
-//
-//        mAnimator.setIntValues(startPosition, endPosition)
-//        animatorStart()
         toggle()
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
-//        if (!mAnimator.isRunning) {
             if (initialText.isNullOrBlank()) {
                 initialText = text.toString()
                 visibleText = visibleText()
@@ -70,7 +53,6 @@ class ExpandableTextView @JvmOverloads constructor(
                 setEllipsizedText(isExpanded)
                 setForeground(isExpanded)
             }
-//        }
     }
 
     private fun toggle() {
@@ -138,115 +120,6 @@ class ExpandableTextView @JvmOverloads constructor(
         if (!isExpanded)
             maxLines = mCollapsedLines!!
         setOnClickListener(this)
-//        initAnimator()
-    }
-
-    private fun initAnimator() {
-//        mAnimator = ValueAnimator.ofInt(-1, -1)
-//            .setDuration(DEFAULT_ANIM_DURATION.toLong())
-//        mAnimator.interpolator = AccelerateDecelerateInterpolator()
-//        mAnimator.addUpdateListener { updateHeight(it.animatedValue as Int) }
-//
-//        mAnimator.addListener(object : AnimatorListenerAdapter() {
-//            override fun onAnimationStart(animation: Animator?) {
-//                if (isCollapsed()) {
-//                    isCollapsing = false
-//                    maxLines = COLLAPSED_MAX_LINES
-//                    setEllipsizedText(isExpanded)
-//                } else {
-//                    isCollapsing = true
-//                }
-//            }
-//
-//            override fun onAnimationEnd(animation: Animator?) {
-//                if (!isCollapsed() && isCollapsing) {
-//                    maxLines = mCollapsedLines!!
-//                    isCollapsing = false
-//                }
-//                setWrapContent()
-//            }
-//        })
-    }
-
-    private fun updateHeight(animatedValue: Int) {
-        val layoutParams: ViewGroup.LayoutParams = layoutParams
-        layoutParams.height = animatedValue
-        setLayoutParams(layoutParams)
-    }
-
-    private fun setWrapContent() {
-        val layoutParams: ViewGroup.LayoutParams = layoutParams
-        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
-        setLayoutParams(layoutParams)
-    }
-
-    private fun animateTo(): Int {
-        return if (isCollapsed()) {
-            layout.height + getPaddingHeight()
-        } else {
-            layout.getLineBottom(mCollapsedLines!! - 1) +
-                    layout.bottomPadding + getPaddingHeight()
-        }
-    }
-
-    private fun getPaddingHeight(): Int {
-        return compoundPaddingBottom + compoundPaddingTop
-    }
-
-    private fun animatorStart() {
-//        mAnimator.start()
-    }
-
-    private fun animatorReverse() {
-        isCollapsing = !isCollapsing
-//        mAnimator.reverse()
-    }
-
-    private fun isCollapsed(): Boolean {
-        return COLLAPSED_MAX_LINES != maxLines
-    }
-
-    private fun ellipsizeColored() {
-        val end: Int = layout.getLineEnd(mCollapsedLines!! - 1)
-        val text: CharSequence? = text
-
-        val chars: Int = layout.getLineEnd(mCollapsedLines!! - 1) -
-                layout.getLineStart(mCollapsedLines!! - 1)
-
-        val additionalGap = 4
-
-        if (chars + additionalGap < mReadMoreText.length) {
-            return
-        }
-
-        val builder = SpannableStringBuilder(text)
-        builder.replace(end - mReadMoreText.length, end + mReadMoreText.length, DEFAULT_ELLIPSIZED_TEXT + mReadMoreText + EMPTY_SPACE)
-        Log.v(TAG, builder.toString())
-        builder.setSpan(ForegroundColorSpan(Color.BLUE), end - mReadMoreText.length,
-            end + mReadMoreText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        setTextNoCaching(builder)
-    }
-
-    private fun setTextNoCaching(text: CharSequence?) {
-        super.setText(text, BufferType.NORMAL)
-    }
-
-    private fun deEllipsize() {
-        val text: CharSequence? = mOriginalText
-        val builder = SpannableStringBuilder(text).append(EMPTY_SPACE + mReadLessText)
-        builder.setSpan(ForegroundColorSpan(Color.BLUE), text!!.length,
-            text.length +  mReadLessText.length + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        setTextNoCaching(builder)
-    }
-
-    inner class TextClickableSpan: ClickableSpan() {
-        override fun onClick(widget: View) {
-            isExpanded = !isExpanded
-        }
-
-//        override fun updateDrawState(ds: TextPaint) {
-//            ds.color = anchorTextColor
-//        }
     }
 
     private fun setEllipsizedText(isExpanded: Boolean) {
