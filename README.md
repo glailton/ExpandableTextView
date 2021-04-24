@@ -1,6 +1,6 @@
 # ExpandableTextView
 
-[![Download](https://img.shields.io/badge/Download-1.0.1-lightgrey)](https://search.maven.org/artifact/io.github.glailton.expandabletextview/expandabletextview)
+[![Download](https://img.shields.io/badge/Download-1.0.1-lightgrey)](https://search.maven.org/artifact/io.github.glailton.expandabletextview/expandabletextview/1.0.1/aar)
 [![Preview the app](https://img.shields.io/badge/Preview-Appetize.io-orange.svg)](https://appetize.io/app/vg9evd5u6zc9bfpuj89wzd24tg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -42,8 +42,13 @@ Current latest version is: [![Download](https://img.shields.io/badge/Download-1.
 
 ## Usage
 
-1. Define the `etv_collapsedLines` xml attribute (`setCollapsedLines(int lines)` method in Java or `collapsedLines` property in Kotlin) to set the number of lines in collapsed state.
-2. Provide unique `id` so that library could restore its state after configuration change.
+* collapsedLines -> number of visible lines
+* isExpanded -> state of textview (default is false)
+* animationDuration -> duration of the animation in ms (Will be implemented in a future version)
+* readMoreText -> text to use instead of default ellipses
+* readLessText -> text to use instead of default ellipses
+* ellipsizeTextColor -> color of ellipsize text (Will be implemented in a future version)
+* isUnderlined -> underline the ellipsize text (Will be implemented in a future version)
 
 Then use `ExpandableTextView` just as you would use any other `TextView`.
 
@@ -64,22 +69,15 @@ Xml snippet:
 
 
 ### Supported features
-- Setting maximum number of collapsed lines and maxim number of expanded lines via xml.
+- Setting maximum number of collapsed lines via xml.
+- Setting the ellipsized text via xml.
+- Setting the collapsed text via xml.
+- Setting if the text starts expanded or collapsed.
 
 ## Documentation
 //TODO
 Take a look at the library documentation with description of public functions and properties:
 
-### Useful xml attributes
-
-You can use `ExpandableTextView` in xml layouts in the same way as you would `TextView`.
-The library provides following attributes in addition to the ones defined in `TextView`.
-
-| Attribute name             | Format                                        | Description | Default |
-| -------------------------|--------------------------------------------|-------------|---------|
-| *etv_animationDuration* | integer >= 0 | Duration of expand/collapse animation in milliseconds. | 300 |
-| *etv_collapsedLines* | integer >= 0 | Number of lines in collapsed state. Must not be greater than `etv_expandedLines`. |[`Integer.MAX_VALUE`](https://developer.android.com/reference/java/lang/Integer.html#MAX_VALUE) |
-| *etv_expandedLines* | integer >= 0 | Number of lines in expanded state. Must not be less than `etv_collapsedLines`. | [`Integer.MAX_VALUE`](https://developer.android.com/reference/java/lang/Integer.html#MAX_VALUE) |
 
 ## Contributing
 
