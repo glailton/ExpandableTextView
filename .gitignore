@@ -85,3 +85,11 @@ lint/tmp/
 # lint/reports/
 
 *.gpg
+
+# txt
+*.txt
+
+# mp4
+*.mp4
+
+app/release
