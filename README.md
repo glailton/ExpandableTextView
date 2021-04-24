@@ -27,7 +27,7 @@ on [Maven Central Repository](https://s01.oss.sonatype.org).
 
 Take a look at the [demo project](app).
 
-![Demo]()
+![Demo](resources/gif.gif)
 
 ## Getting Started
 
