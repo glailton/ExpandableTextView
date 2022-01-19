@@ -15,6 +15,7 @@ import android.text.style.UnderlineSpan
 import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.databinding.BindingAdapter
 import io.github.glailton.expandabletextview.Constants.Companion.COLLAPSED_MAX_LINES
 import io.github.glailton.expandabletextview.Constants.Companion.DEFAULT_ANIM_DURATION
 import io.github.glailton.expandabletextview.Constants.Companion.DEFAULT_ELLIPSIZED_TEXT
@@ -98,6 +99,14 @@ class ExpandableTextView @JvmOverloads constructor(
     override fun setText(text: CharSequence?, type: BufferType?) {
         mOriginalText = text
         super.setText(text, type)
+    }
+
+    fun setReadMoreText(readMore: String) {
+        mReadMoreText = readMore
+    }
+
+    fun setReadLessText(readLess: String) {
+        mReadLessText = readLess
     }
 
     //private functions
@@ -216,4 +225,14 @@ class ExpandableTextView @JvmOverloads constructor(
         const val ANIMATION_PROPERTY_MAX_HEIGHT = "maxHeight"
         const val ANIMATION_PROPERTY_ALPHA = "alpha"
     }
+}
+
+@BindingAdapter("readMoreText")
+fun ExpandableTextView.readMoreText(readMore: String) {
+    this.setReadMoreText(readMore)
+}
+
+@BindingAdapter("readLessText")
+fun ExpandableTextView.readLessText(readLess: String) {
+    this.setReadLessText(readLess)
 }
