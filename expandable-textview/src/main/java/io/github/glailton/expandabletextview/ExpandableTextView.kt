@@ -141,28 +141,34 @@ class ExpandableTextView @JvmOverloads constructor(
                 .append(DEFAULT_ELLIPSIZED_TEXT)
                 .append(mReadLessText.toString().span())
         } else {
+            val endIndex = if (visibleText.length - (mReadMoreText.toString().length + DEFAULT_ELLIPSIZED_TEXT.length) < 0) visibleText.length
+                else visibleText.length - (mReadMoreText.toString().length + DEFAULT_ELLIPSIZED_TEXT.length)
             SpannableStringBuilder(
-                visibleText.substring(0,
-                    visibleText.length - (mReadMoreText.toString().length + DEFAULT_ELLIPSIZED_TEXT.length)))
+                visibleText.substring(0, endIndex))
                 .append(DEFAULT_ELLIPSIZED_TEXT)
                 .append(mReadMoreText.toString().span())
         }
     }
 
     private fun visibleText(): String {
-        var end = 0
+        try {
+            var end = 0
 
-        return if (mCollapsedLines!! < COLLAPSED_MAX_LINES) {
-            for (i in 0 until mCollapsedLines!!) {
-                if (layout.getLineEnd(i) == 0)
-                    break
-                else
-                    end = layout.getLineEnd(i)
+            return if (mCollapsedLines!! < COLLAPSED_MAX_LINES) {
+                for (i in 0 until mCollapsedLines!!) {
+                    if (layout.getLineEnd(i) == 0)
+                        break
+                    else
+                        end = layout.getLineEnd(i)
+                }
+                initialText?.substring(0, end - mReadMoreText.toString().length)!!
+            }else {
+                initialText!!
             }
-            initialText?.substring(0, end - mReadMoreText.toString().length)!!
-        }else {
-            initialText!!
+        }catch (e: Exception){
+            return initialText!!
         }
+
 
 
     }
