@@ -42,7 +42,7 @@ class ExpandableTextView @JvmOverloads constructor(
     private lateinit var visibleText: String
 
     override fun onClick(v: View?) {
-        toggle()
+        this.toggle()
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
@@ -101,12 +101,48 @@ class ExpandableTextView @JvmOverloads constructor(
         super.setText(text, type)
     }
 
-    fun setReadMoreText(readMore: String) {
+    fun setReadMoreText(readMore: String): ExpandableTextView {
         mReadMoreText = readMore
+        return this
     }
 
-    fun setReadLessText(readLess: String) {
+    fun setReadLessText(readLess: String): ExpandableTextView {
         mReadLessText = readLess
+        return this
+    }
+
+    fun setCollapsedLines(collapsedLines: Int): ExpandableTextView {
+        mCollapsedLines = collapsedLines
+        return this
+    }
+
+    fun setIsExpanded(isExpanded: Boolean): ExpandableTextView {
+        this.isExpanded = isExpanded
+        return this
+    }
+
+    fun setAnimationDuration(animationDuration: Int): ExpandableTextView {
+        mAnimationDuration = animationDuration
+        return this
+    }
+
+    fun setIsUnderlined(isUnderlined: Boolean): ExpandableTextView {
+        this.isUnderlined = isUnderlined
+        return this
+    }
+
+    fun setEllipsizedTextColor(ellipsizeTextColor: Int): ExpandableTextView {
+        mEllipsizeTextColor = ellipsizeTextColor
+        return this
+    }
+
+    fun setForegroundColor(foregroundColor: Int): ExpandableTextView {
+        this.foregroundColor = foregroundColor
+        return this
+    }
+
+    fun isExpanded(): Boolean {
+        return this.isExpanded
     }
 
     //private functions
@@ -230,6 +266,11 @@ class ExpandableTextView @JvmOverloads constructor(
         const val MIN_VALUE_ALPHA = 0
         const val ANIMATION_PROPERTY_MAX_HEIGHT = "maxHeight"
         const val ANIMATION_PROPERTY_ALPHA = "alpha"
+
+        fun toggle(expandableTextView: ExpandableTextView): ExpandableTextView {
+            expandableTextView.toggle()
+            return expandableTextView
+        }
     }
 }
 
