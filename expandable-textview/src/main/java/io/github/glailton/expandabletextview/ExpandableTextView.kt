@@ -137,8 +137,7 @@ class ExpandableTextView @JvmOverloads constructor(
 
         text = if (isExpanded || visibleText.isAllTextVisible() || mCollapsedLines!! == COLLAPSED_MAX_LINES) {
             SpannableStringBuilder(
-                initialText.toString())
-                .append(DEFAULT_ELLIPSIZED_TEXT)
+                initialText.toString())                
                 .append(mReadLessText.toString().span())
         } else {
             val endIndex = if (visibleText.length - (mReadMoreText.toString().length + DEFAULT_ELLIPSIZED_TEXT.length) < 0) visibleText.length
