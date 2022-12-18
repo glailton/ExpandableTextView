@@ -19,6 +19,7 @@ import androidx.databinding.BindingAdapter
 import io.github.glailton.expandabletextview.Constants.Companion.COLLAPSED_MAX_LINES
 import io.github.glailton.expandabletextview.Constants.Companion.DEFAULT_ANIM_DURATION
 import io.github.glailton.expandabletextview.Constants.Companion.DEFAULT_ELLIPSIZED_TEXT
+import io.github.glailton.expandabletextview.Constants.Companion.EMPTY_SPACE
 import io.github.glailton.expandabletextview.Constants.Companion.READ_LESS
 import io.github.glailton.expandabletextview.Constants.Companion.READ_MORE
 
@@ -42,7 +43,7 @@ class ExpandableTextView @JvmOverloads constructor(
     private lateinit var visibleText: String
 
     override fun onClick(v: View?) {
-        toggle()
+        toggleExpandableTextView()
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
@@ -56,7 +57,7 @@ class ExpandableTextView @JvmOverloads constructor(
             }
     }
 
-    private fun toggle() {
+    private fun toggleExpandableTextView() {
         if (visibleText.isAllTextVisible()) {
             return
         }
@@ -101,12 +102,52 @@ class ExpandableTextView @JvmOverloads constructor(
         super.setText(text, type)
     }
 
-    fun setReadMoreText(readMore: String) {
+    fun setReadMoreText(readMore: String): ExpandableTextView {
         mReadMoreText = readMore
+        return this
     }
 
-    fun setReadLessText(readLess: String) {
+    fun setReadLessText(readLess: String): ExpandableTextView {
         mReadLessText = readLess
+        return this
+    }
+
+    fun setCollapsedLines(collapsedLines: Int): ExpandableTextView {
+        mCollapsedLines = collapsedLines
+        return this
+    }
+
+    fun setIsExpanded(isExpanded: Boolean): ExpandableTextView {
+        this.isExpanded = isExpanded
+        return this
+    }
+
+    fun setAnimationDuration(animationDuration: Int): ExpandableTextView {
+        mAnimationDuration = animationDuration
+        return this
+    }
+
+    fun setIsUnderlined(isUnderlined: Boolean): ExpandableTextView {
+        this.isUnderlined = isUnderlined
+        return this
+    }
+
+    fun setEllipsizedTextColor(ellipsizeTextColor: Int): ExpandableTextView {
+        mEllipsizeTextColor = ellipsizeTextColor
+        return this
+    }
+
+    fun setForegroundColor(foregroundColor: Int): ExpandableTextView {
+        this.foregroundColor = foregroundColor
+        return this
+    }
+
+    fun isExpanded(): Boolean {
+        return this.isExpanded
+    }
+
+    fun toggle() {
+        toggleExpandableTextView()
     }
 
     //private functions
@@ -138,7 +179,7 @@ class ExpandableTextView @JvmOverloads constructor(
         text = if (isExpanded || visibleText.isAllTextVisible() || mCollapsedLines!! == COLLAPSED_MAX_LINES) {
             SpannableStringBuilder(
                 initialText.toString())
-                .append(DEFAULT_ELLIPSIZED_TEXT)
+                .append(EMPTY_SPACE)
                 .append(mReadLessText.toString().span())
         } else {
             val endIndex = if (visibleText.length - (mReadMoreText.toString().length + DEFAULT_ELLIPSIZED_TEXT.length) < 0) visibleText.length

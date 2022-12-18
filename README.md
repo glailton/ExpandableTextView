@@ -63,7 +63,30 @@ Xml snippet:
         expandableTextView:isExpanded="true"
         android:text="@string/very_long_text" />
 ```
+or programmatically
+```
 
+        binding.expandTvProg
+          .setAnimationDuration(500)
+          .setReadMoreText("View More")
+          .setReadLessText("View Less")
+          .setCollapsedLines(3)
+          .setIsExpanded(true)
+          .setIsUnderlined(true)
+          .setEllipsizedTextColor(ContextCompat.getColor(this, R.color.purple_200))
+
+        binding.expandTvProg.text =
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." +
+                    "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat." +
+                    "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." +
+                    "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+        binding.expandTvProg.setOnClickListener {
+            binding.expandTvProg.toggle()
+            if (binding.expandTvVeryLong.isExpanded())
+                binding.expandTvVeryLong.toggle()
+        }
+```
 
 ### Supported features
 - Setting maximum number of collapsed lines via xml.

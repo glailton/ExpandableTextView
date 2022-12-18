@@ -19,8 +19,6 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
 
-        versionCode 102
-        versionName "1.0.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,6 +39,7 @@ android {
     buildFeatures {
         dataBinding true
     }
+    namespace 'io.github.glailton.expandabletextview'
 }
 
 dependencies {
