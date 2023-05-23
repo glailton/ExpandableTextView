@@ -30,7 +30,7 @@ class ExpandableTextView @JvmOverloads constructor(
     View.OnClickListener {
 
     private var mOriginalText: CharSequence? = ""
-    private var mCollapsedLines: Int? = 0
+    private var mCollapsedLines = 0
     private var mReadMoreText: CharSequence = READ_MORE
     private var mReadLessText: CharSequence = READ_LESS
     private var isExpanded: Boolean = false
@@ -65,7 +65,7 @@ class ExpandableTextView @JvmOverloads constructor(
         isExpanded = !isExpanded
 
         maxLines = if (!isExpanded) {
-            mCollapsedLines!!
+            mCollapsedLines
         } else {
             COLLAPSED_MAX_LINES
         }
@@ -168,7 +168,7 @@ class ExpandableTextView @JvmOverloads constructor(
         }
 
         if (!isExpanded)
-            maxLines = mCollapsedLines!!
+            maxLines = mCollapsedLines
         setOnClickListener(this)
     }
 
@@ -176,7 +176,7 @@ class ExpandableTextView @JvmOverloads constructor(
         if (initialText?.isBlank()!!)
             return
 
-        text = if (isExpanded || visibleText.isAllTextVisible() || mCollapsedLines!! == COLLAPSED_MAX_LINES) {
+        text = if (isExpanded || visibleText.isAllTextVisible() || mCollapsedLines == COLLAPSED_MAX_LINES) {
             SpannableStringBuilder(
                 initialText.toString())
                 .append(EMPTY_SPACE)
@@ -195,8 +195,8 @@ class ExpandableTextView @JvmOverloads constructor(
         try {
             var end = 0
 
-            return if (mCollapsedLines!! < COLLAPSED_MAX_LINES) {
-                for (i in 0 until mCollapsedLines!!) {
+            return if (mCollapsedLines < COLLAPSED_MAX_LINES) {
+                for (i in 0 until mCollapsedLines) {
                     if (layout.getLineEnd(i) == 0)
                         break
                     else
