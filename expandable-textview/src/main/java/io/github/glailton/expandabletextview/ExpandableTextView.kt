@@ -36,11 +36,11 @@ class ExpandableTextView @JvmOverloads constructor(
     private var isExpanded: Boolean = false
     private var mAnimationDuration: Int? = 0
     private var foregroundColor: Int? = 0
-    private var initialText: String? = ""
+    private var initialText = ""
     private var isUnderlined: Boolean? = false
     private var mEllipsizeTextColor: Int? = 0
 
-    private lateinit var visibleText: String
+    private lateinit var collapsedVisibleText: String
 
     override fun onClick(v: View?) {
         toggleExpandableTextView()
@@ -48,17 +48,16 @@ class ExpandableTextView @JvmOverloads constructor(
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
-            if (initialText.isNullOrBlank()) {
+            if (initialText.isBlank()) {
                 initialText = text.toString()
-                visibleText = visibleText()
-
+                collapsedVisibleText = collapsedVisibleText()
                 setEllipsizedText(isExpanded)
                 setForeground(isExpanded)
             }
     }
 
     private fun toggleExpandableTextView() {
-        if (visibleText.isAllTextVisible()) {
+        if (collapsedVisibleText.isAllTextVisible()) {
             return
         }
 
@@ -167,51 +166,50 @@ class ExpandableTextView @JvmOverloads constructor(
             }
         }
 
-        if (!isExpanded)
+        if (!isExpanded && mCollapsedLines < COLLAPSED_MAX_LINES)
             maxLines = mCollapsedLines
         setOnClickListener(this)
     }
 
     private fun setEllipsizedText(isExpanded: Boolean) {
-        if (initialText?.isBlank()!!)
+        if (initialText.isBlank())
             return
 
-        text = if (isExpanded || visibleText.isAllTextVisible() || mCollapsedLines == COLLAPSED_MAX_LINES) {
-            SpannableStringBuilder(
-                initialText.toString())
+        text = if (collapsedVisibleText.isAllTextVisible()){
+            initialText
+        } else if (isExpanded){
+            SpannableStringBuilder(initialText)
                 .append(EMPTY_SPACE)
                 .append(mReadLessText.toString().span())
         } else {
-            val endIndex = if (visibleText.length - (mReadMoreText.toString().length + DEFAULT_ELLIPSIZED_TEXT.length) < 0) visibleText.length
-                else visibleText.length - (mReadMoreText.toString().length + DEFAULT_ELLIPSIZED_TEXT.length)
+            val endIndex = if (collapsedVisibleText.length - (mReadMoreText.toString().length + DEFAULT_ELLIPSIZED_TEXT.length) < 0) collapsedVisibleText.length
+                else collapsedVisibleText.length - (mReadMoreText.toString().length + DEFAULT_ELLIPSIZED_TEXT.length)
             SpannableStringBuilder(
-                visibleText.substring(0, endIndex))
+                collapsedVisibleText.substring(0, endIndex))
                 .append(DEFAULT_ELLIPSIZED_TEXT)
                 .append(mReadMoreText.toString().span())
         }
     }
 
-    private fun visibleText(): String {
+    private fun collapsedVisibleText(): String {
         try {
-            var end = 0
-
-            return if (mCollapsedLines < COLLAPSED_MAX_LINES) {
+            var finalTextOffset = 0
+            if (mCollapsedLines < COLLAPSED_MAX_LINES) {
                 for (i in 0 until mCollapsedLines) {
-                    if (layout.getLineEnd(i) == 0)
-                        break
+                    val textOffset = layout.getLineEnd(i)
+                    if (textOffset == initialText.length)
+                        return initialText
                     else
-                        end = layout.getLineEnd(i)
+                        finalTextOffset = textOffset
                 }
-                initialText?.substring(0, end - mReadMoreText.toString().length)!!
+                return initialText.substring(0, finalTextOffset - mReadMoreText.toString().length)
             }else {
-                initialText!!
+                return initialText
             }
         }catch (e: Exception){
-            return initialText!!
+            e.printStackTrace()
+            return initialText
         }
-
-
-
     }
 
     private fun setForeground(isExpanded: Boolean) {
