@@ -6,7 +6,7 @@ class Constants {
         const val DEFAULT_ANIM_DURATION = 450
         const val READ_MORE  = "Read more"
         const val READ_LESS  = "Read less"
-        const val DEFAULT_ELLIPSIZED_TEXT = "... "
+        const val DEFAULT_ELLIPSIZED_TEXT = "… "
         const val EMPTY_SPACE = " "
     }
 }
