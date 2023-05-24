@@ -16,6 +16,10 @@
         <attr name="ellipsizeText" format="string" />
         <attr name="isUnderlined" format="boolean" />
         <attr name="ellipsizeTextColor" format="color" />
+        <attr name="expandType" format="enum">
+            <enum name="layout" value="0"/>
+            <enum name="popup" value="1"/>
+        </attr>
 
 <!--        <attr name="expandToggleType" format="enum">-->
 <!--            <enum name="ImageButton" value="0"/>-->
