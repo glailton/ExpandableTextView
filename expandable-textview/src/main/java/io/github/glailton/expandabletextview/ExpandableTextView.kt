@@ -272,7 +272,7 @@ class ExpandableTextView @JvmOverloads constructor(
                     else
                         finalTextOffset = textOffset
                 }
-                return initialText.substring(0, finalTextOffset)
+                return initialText.substring(0, finalTextOffset - mReadMoreText.length)
             }else {
                 return initialText
             }
