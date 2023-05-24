@@ -3,6 +3,8 @@ package io.github.glailton.expandabletextview.demo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
+import io.github.glailton.expandabletextview.EXPAND_TYPE_LAYOUT
+import io.github.glailton.expandabletextview.EXPAND_TYPE_POPUP
 import io.github.glailton.expandabletextview.demo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +23,7 @@ class MainActivity : AppCompatActivity() {
             .setCollapsedLines(3)
             .setIsExpanded(true)
             .setIsUnderlined(true)
+            .setExpandType(EXPAND_TYPE_POPUP)
             .setEllipsizedTextColor(ContextCompat.getColor(this, R.color.purple_200))
 
         binding.expandTvProg.text =
@@ -31,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.expandTvProg.setOnClickListener {
             binding.expandTvProg.toggle()
-            if (binding.expandTvVeryLong.isExpanded())
+            if (binding.expandTvVeryLong.isExpanded && binding.expandTvVeryLong.expandType == EXPAND_TYPE_LAYOUT)
                 binding.expandTvVeryLong.toggle()
         }
     }
