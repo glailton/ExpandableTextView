@@ -25,6 +25,7 @@ import io.github.glailton.expandabletextview.Constants.Companion.READ_LESS
 import io.github.glailton.expandabletextview.Constants.Companion.READ_MORE
 import java.lang.Integer.min
 import kotlin.math.max
+import kotlin.math.roundToInt
 
 /**
  * Expand the text within layout
@@ -40,6 +41,11 @@ const val EXPAND_TYPE_POPUP = 1
  * Default expand type which will layout
  */
 const val EXPAND_TYPE_DEFAULT = EXPAND_TYPE_LAYOUT
+
+/**
+ * This value define how much space should be consumed by ellipsize text to represent itself.
+ */
+const val ELLIPSIZE_TEXT_LENGTH_MULTIPLIER = 1.5
 
 class ExpandableTextView @JvmOverloads constructor(
     context: Context,
@@ -140,13 +146,7 @@ class ExpandableTextView @JvmOverloads constructor(
     private fun configureMaxLines(){
         if (mCollapsedLines < COLLAPSED_MAX_LINES){
             maxLines = when(expandType) {
-                EXPAND_TYPE_LAYOUT -> {
-                    if (!isExpanded) {
-                        mCollapsedLines
-                    } else {
-                        COLLAPSED_MAX_LINES
-                    }
-                }
+                EXPAND_TYPE_LAYOUT -> if (isExpanded) COLLAPSED_MAX_LINES else mCollapsedLines
                 EXPAND_TYPE_POPUP -> mCollapsedLines
                 else -> maxLines
             }
@@ -252,7 +252,8 @@ class ExpandableTextView @JvmOverloads constructor(
 
     private fun getCollapseText(): SpannableStringBuilder {
 
-        val textAvailableLength = max(0, collapsedVisibleText.length - (mReadMoreText.length + DEFAULT_ELLIPSIZED_TEXT.length))
+        val ellipseTextLength = ((mReadMoreText.length + DEFAULT_ELLIPSIZED_TEXT.length) * ELLIPSIZE_TEXT_LENGTH_MULTIPLIER).roundToInt()
+        val textAvailableLength = max(0, collapsedVisibleText.length - ellipseTextLength)
         val ellipsizeAvailableLength = min(collapsedVisibleText.length, DEFAULT_ELLIPSIZED_TEXT.length)
         val readMoreAvailableLength = min(collapsedVisibleText.length - ellipsizeAvailableLength, mReadMoreText.length)
 
@@ -272,7 +273,7 @@ class ExpandableTextView @JvmOverloads constructor(
                     else
                         finalTextOffset = textOffset
                 }
-                return initialText.substring(0, finalTextOffset - mReadMoreText.length)
+                return initialText.substring(0, finalTextOffset)
             }else {
                 return initialText
             }
