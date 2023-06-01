@@ -45,7 +45,7 @@ const val EXPAND_TYPE_DEFAULT = EXPAND_TYPE_LAYOUT
 /**
  * This value define how much space should be consumed by ellipsize text to represent itself.
  */
-const val ELLIPSIZE_TEXT_LENGTH_MULTIPLIER = 1.5
+const val ELLIPSIZE_TEXT_LENGTH_MULTIPLIER = 2.0
 
 class ExpandableTextView @JvmOverloads constructor(
     context: Context,
