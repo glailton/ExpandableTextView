@@ -1,6 +1,6 @@
 # ExpandableTextView
 
-[![Download](https://img.shields.io/badge/Download-1.0.3-lightgrey)](https://search.maven.org/artifact/io.github.glailton.expandabletextview/expandabletextview/1.0.3/aar)
+[![Download](https://img.shields.io/badge/Download-1.0.4-lightgrey)](https://search.maven.org/artifact/io.github.glailton.expandabletextview/expandabletextview/1.0.4/aar)
 [![Preview the app](https://img.shields.io/badge/Preview-Appetize.io-orange.svg)](https://appetize.io/app/vg9evd5u6zc9bfpuj89wzd24tg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -35,7 +35,7 @@ dependencies {
     implementation 'io.github.glailton.expandabletextview:expandabletextview:$LatestVersion'
 }
 ```
-Current latest version is: [![Download](https://img.shields.io/badge/Download-1.0.3-lightgrey)](https://search.maven.org/artifact/io.github.glailton.expandabletextview/expandabletextview)
+Current latest version is: [![Download](https://img.shields.io/badge/Download-1.0.4-lightgrey)](https://search.maven.org/artifact/io.github.glailton.expandabletextview/expandabletextview)
 
 ## Usage
 
@@ -44,8 +44,9 @@ Current latest version is: [![Download](https://img.shields.io/badge/Download-1.
 * animationDuration -> duration of the animation in ms (Will be implemented in a future version)
 * readMoreText -> text to use instead of default ellipses
 * readLessText -> text to use instead of default ellipses
-* ellipsizeTextColor -> color of ellipsize text (Will be implemented in a future version)
-* isUnderlined -> underline the ellipsize text (Will be implemented in a future version)
+* expandType -> type of expandable layout, could be layout or popup
+* ellipsizeTextColor -> color of ellipsize text
+* isUnderlined -> underline the ellipsize text
 
 Then use `ExpandableTextView` just as you would use any other `TextView`.
 
@@ -61,6 +62,7 @@ Xml snippet:
         expandableTextView:readLessText="Leia menos"
         expandableTextView:textMode="line"
         expandableTextView:isExpanded="true"
+        app:expandType="layout"
         android:text="@string/very_long_text" />
 ```
 or programmatically
@@ -73,6 +75,7 @@ or programmatically
           .setCollapsedLines(3)
           .setIsExpanded(true)
           .setIsUnderlined(true)
+          .setExpandType(EXPAND_TYPE_POPUP)
           .setEllipsizedTextColor(ContextCompat.getColor(this, R.color.purple_200))
 
         binding.expandTvProg.text =
@@ -83,7 +86,7 @@ or programmatically
 
         binding.expandTvProg.setOnClickListener {
             binding.expandTvProg.toggle()
-            if (binding.expandTvVeryLong.isExpanded())
+            if (binding.expandTvVeryLong.isExpanded && binding.expandTvVeryLong.expandType == EXPAND_TYPE_LAYOUT)
                 binding.expandTvVeryLong.toggle()
         }
 ```
@@ -93,6 +96,7 @@ or programmatically
 - Setting the ellipsized text via xml.
 - Setting the collapsed text via xml.
 - Setting if the text starts expanded or collapsed.
+- Setting if the expandable type is layout or popup
 
 ## Documentation
 //TODO

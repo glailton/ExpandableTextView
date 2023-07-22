@@ -37,6 +37,7 @@
         expandableTextView:readMoreText="Leia mais"
         expandableTextView:readLessText="Leia menos"
         expandableTextView:textMode="line"
+        app:expandType="layout"
         android:text="@string/very_long_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
