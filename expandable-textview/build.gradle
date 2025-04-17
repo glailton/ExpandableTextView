@@ -6,18 +6,18 @@ apply plugin: 'kotlin-kapt'
 
 ext {
     PUBLISH_GROUP_ID = 'io.github.glailton.expandabletextview'
-    PUBLISH_VERSION = '1.0.4'
+    PUBLISH_VERSION = '1.0.5'
     PUBLISH_ARTIFACT_ID = 'expandabletextview'
 }
 
 apply from: "${rootProject.projectDir}/publish-mavencentral.gradle"
 
 android {
-    compileSdkVersion 30
+    compileSdk 35
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 35
 
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
