@@ -2,6 +2,8 @@ package io.github.glailton.expandabletextview.demo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.SpannableString
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import io.github.glailton.expandabletextview.EXPAND_TYPE_LAYOUT
 import io.github.glailton.expandabletextview.EXPAND_TYPE_POPUP
@@ -37,5 +39,18 @@ class MainActivity : AppCompatActivity() {
             if (binding.expandTvVeryLong.isExpanded && binding.expandTvVeryLong.expandType == EXPAND_TYPE_LAYOUT)
                 binding.expandTvVeryLong.toggle()
         }
+
+        binding.expandTvSpannable
+            .setAnimationDuration(500)
+            .setReadMoreText("View More")
+            .setReadLessText("View Less")
+            .setCollapsedLines(3)
+            .setIsExpanded(false)
+            .setIsUnderlined(true)
+            .setExpandType(EXPAND_TYPE_LAYOUT)
+            .setEllipsizedTextColor(ContextCompat.getColor(this, R.color.purple_200))
+
+        binding.expandTvSpannable.setText(SpannableString("quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."), TextView.BufferType.SPANNABLE)
+
     }
 }

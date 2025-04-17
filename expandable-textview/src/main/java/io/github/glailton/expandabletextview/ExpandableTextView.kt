@@ -315,7 +315,7 @@ class ExpandableTextView @JvmOverloads constructor(
         }
     }
 
-    private fun String.isAllTextVisible(): Boolean = this == text
+    private fun String.isAllTextVisible(): Boolean = this == text.toString()
 
     private fun String.span(): SpannableString =
         SpannableString(this).apply {
