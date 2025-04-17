@@ -117,14 +117,16 @@ class ExpandableTextView @JvmOverloads constructor(
                     start()
 
                     addListener(object : Animator.AnimatorListener {
-                        override fun onAnimationEnd(animation: Animator?) {
+                        override fun onAnimationStart(p0: Animator) {}
+
+                        override fun onAnimationEnd(p0: Animator) {
                             if (!isExpanded)
                                 setEllipsizedText(isExpanded)
                         }
 
-                        override fun onAnimationRepeat(animation: Animator?) {}
-                        override fun onAnimationCancel(animation: Animator?) {}
-                        override fun onAnimationStart(animation: Animator?) {}
+                        override fun onAnimationCancel(p0: Animator) {}
+
+                        override fun onAnimationRepeat(p0: Animator) {}
                     })
                 }
 
