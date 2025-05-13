@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/examplesFragment">
+
+
+    <fragment
+        android:id="@+id/examplesFragment"
+        android:name="io.github.glailton.expandabletextview.demo.ui.ExamplesFragment"
+        android:label="Examples"
+        tools:layout="@layout/fragment_examples" />
+
+    <fragment
+        android:id="@+id/listViewFragment"
+        android:name="io.github.glailton.expandabletextview.demo.ui.ListViewFragment"
+        android:label="Examples with ListView"
+        tools:layout="@layout/fragment_list_view" />
+
+    <fragment
+        android:id="@+id/recyclerViewFragment"
+        android:name="io.github.glailton.expandabletextview.demo.ui.RecyclerViewFragment"
+        android:label="Examples with RecyclerView"
+        tools:layout="@layout/fragment_recycler_view" />
+
+</navigation>

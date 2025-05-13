@@ -1,7 +1,7 @@
 # ExpandableTextView
 
-[![Download](https://img.shields.io/badge/Download-1.0.4-lightgrey)](https://search.maven.org/artifact/io.github.glailton.expandabletextview/expandabletextview/1.0.4/aar)
-[![Preview the app](https://img.shields.io/badge/Preview-Appetize.io-orange.svg)](https://appetize.io/app/vg9evd5u6zc9bfpuj89wzd24tg)
+[![Download](https://img.shields.io/badge/Download-1.0.6-lightgrey)](https://central.sonatype.com/artifact/io.github.glailton/expandabletextview)
+[![Preview the app](https://img.shields.io/badge/Preview-Appetize.io-orange.svg)](https://appetize.io/app/b_tebmxa2vwvqnbyxetlafkh725e)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 An Expandable TextView for Android written in

@@ -1,12 +1,13 @@
 package io.github.glailton.expandabletextview
 
-import android.animation.*
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.GradientDrawable.*
-import android.graphics.drawable.GradientDrawable.Orientation.*
+import android.graphics.drawable.GradientDrawable.Orientation.BOTTOM_TOP
 import android.os.Build
 import android.text.Spannable
 import android.text.SpannableString
@@ -75,20 +76,22 @@ class ExpandableTextView @JvmOverloads constructor(
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
-            if (initialText.isBlank()) {
-                initialText = text.toString()
+        if (initialText.isBlank()) {
+            initialText = text.toString()
+            post {
                 collapsedVisibleText = collapsedVisibleText()
                 //Override expand property in specific scenarios
                 isExpanded = if (collapsedVisibleText.isAllTextVisible()) {
                     true
-                }
-                else when(expandType){
+                } else when (expandType) {
                     EXPAND_TYPE_POPUP -> false
                     else -> isExpanded
                 }
+                configureMaxLines()
                 setEllipsizedText(isExpanded)
                 setForeground(isExpanded)
             }
+        }
     }
 
     private fun toggleExpandableTextView() {

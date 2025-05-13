@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/examplesFragment"
+    tools:context=".ui.ExamplesFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        xmlns:expandableTextView="http://schemas.android.com/apk/res-auto">
+
+        <io.github.glailton.expandabletextview.ExpandableTextView
+            android:id="@+id/expand_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:padding="8dp"
+            expandableTextView:collapsedLines="3"
+            expandableTextView:animDuration="500"
+            expandableTextView:readMoreText="Leia mais"
+            expandableTextView:readLessText="Leia menos"
+            expandableTextView:textMode="line"
+            expandableTextView:isExpanded="true"
+            android:text="@string/very_short_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <io.github.glailton.expandabletextview.ExpandableTextView
+            android:id="@+id/expand_tv_very_long"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:padding="8dp"
+            expandableTextView:collapsedLines="3"
+            expandableTextView:animDuration="500"
+            expandableTextView:readMoreText="Leia mais"
+            expandableTextView:readLessText="Leia menos"
+            expandableTextView:textMode="line"
+            app:expandType="layout"
+            android:text="@string/very_long_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expand_tv"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <io.github.glailton.expandabletextview.ExpandableTextView
+            android:id="@+id/expand_popup_tv_very_long"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:padding="8dp"
+            expandableTextView:collapsedLines="4"
+            expandableTextView:animDuration="500"
+            expandableTextView:readMoreText="Leia mais"
+            expandableTextView:readLessText="Leia menos"
+            expandableTextView:textMode="line"
+            expandableTextView:expandType="popup"
+            android:text="@string/very_long_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expand_tv_very_long"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <io.github.glailton.expandabletextview.ExpandableTextView
+            android:id="@+id/not_expand_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:padding="8dp"
+            android:text="@string/very_long_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expand_popup_tv_very_long"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <io.github.glailton.expandabletextview.ExpandableTextView
+            android:id="@+id/expand_tv_prog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:padding="8dp"
+            android:text=""
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/not_expand_tv"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text = "expand_tv_prog"/>
+
+        <io.github.glailton.expandabletextview.ExpandableTextView
+            android:id="@+id/expand_tv_spannable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expand_tv_prog"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text = "expand_tv_spannable"/>
+    </LinearLayout>
+</FrameLayout>
+

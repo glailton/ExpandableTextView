@@ -3,4 +3,13 @@
     <string name="very_long_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
     <string name="short_text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ornare lacinia magna, sed eleifend dui aliquet sed."</string>
     <string name="very_short_text">Lorem Ipsum dolor sit amet</string>
+    <string name="lorem_ipsum">
+        Eu inicio com esse texto que parece com o que eu quero setar mas nao eh Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac orci quis tortor imperdiet venenatis.
+        Duis elementum auctor accumsan. Aliquam in felis sit amet augue.
+    </string>
+    <string name="view_more">View More</string>
+    <string name="view_less">View Less</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="expandabletextview">ExpandableTextView</string>
 </resources>
