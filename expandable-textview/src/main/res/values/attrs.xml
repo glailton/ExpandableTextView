@@ -20,6 +20,7 @@
             <enum name="layout" value="0"/>
             <enum name="popup" value="1"/>
         </attr>
+        <attr name="fadeAnimationEnabled" format="boolean" />
 
 <!--        <attr name="expandToggleType" format="enum">-->
 <!--            <enum name="ImageButton" value="0"/>-->

@@ -53,6 +53,7 @@ class ExamplesFragment : Fragment() {
 
         binding.expandTvSpannable
             .setAnimationDuration(500)
+            .setFadeAnimationEnabled(true)
             .setReadMoreText("View More")
             .setReadLessText("View Less")
             .setCollapsedLines(3)

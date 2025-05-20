@@ -11,7 +11,7 @@ android {
     compileSdk 35
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 35
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -55,7 +55,7 @@ mavenPublishing {
 
     signAllPublications()
 
-    coordinates("io.github.glailton", "expandabletextview", "1.0.6")
+    coordinates("io.github.glailton", "expandabletextview", "1.0.7")
 
     pom {
         name = "ExpandableTextView"

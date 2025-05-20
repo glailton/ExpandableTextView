@@ -1,14 +1,13 @@
 package io.github.glailton.expandabletextview
 
 import android.animation.Animator
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Rect
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.GradientDrawable.Orientation.BOTTOM_TOP
-import android.os.Build
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -16,6 +15,8 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.UnderlineSpan
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingAdapter
 import io.github.glailton.expandabletextview.Constants.Companion.COLLAPSED_MAX_LINES
@@ -67,7 +68,7 @@ class ExpandableTextView @JvmOverloads constructor(
     private var mEllipsizeTextColor: Int? = 0
     var expandType = EXPAND_TYPE_DEFAULT
         private set
-
+    private var fadeAnimationEnabled = true
     private lateinit var collapsedVisibleText: String
 
     override fun onClick(v: View?) {
@@ -95,58 +96,15 @@ class ExpandableTextView @JvmOverloads constructor(
     }
 
     private fun toggleExpandableTextView() {
+        if (collapsedVisibleText.isAllTextVisible()) return
 
-        //No expand/collapse needed if collapse text is identical to complete text
-        if (collapsedVisibleText.isAllTextVisible()) {
-            return
-        }
-
-        when(expandType) {
-            EXPAND_TYPE_LAYOUT -> {
-
-                isExpanded = !isExpanded
-                configureMaxLines()
-
-                val startHeight = measuredHeight
-
-                measure(
-                    MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
-                    MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
-                )
-                val endHeight = measuredHeight
-
-                animationSet(startHeight, endHeight).apply {
-                    duration = mAnimationDuration?.toLong()!!
-                    start()
-
-                    addListener(object : Animator.AnimatorListener {
-                        override fun onAnimationStart(p0: Animator) {}
-
-                        override fun onAnimationEnd(p0: Animator) {
-                            if (!isExpanded)
-                                setEllipsizedText(isExpanded)
-                        }
-
-                        override fun onAnimationCancel(p0: Animator) {}
-
-                        override fun onAnimationRepeat(p0: Animator) {}
-                    })
-                }
-
-                setEllipsizedText(isExpanded)
-            }
-            EXPAND_TYPE_POPUP -> {
-                AlertDialog.Builder(context)
-                    .setTitle("")
-                    .setMessage(initialText)
-                    .setNegativeButton(android.R.string.ok, null)
-                    .show()
-            }
+        when (expandType) {
+            EXPAND_TYPE_LAYOUT -> animateHeightTransition()
+            EXPAND_TYPE_POPUP -> showPopupText()
             else -> throw UnsupportedOperationException("No toggle operation provided for expand type[$expandType]")
         }
-
-
     }
+
 
     private fun configureMaxLines(){
         if (mCollapsedLines < COLLAPSED_MAX_LINES){
@@ -156,6 +114,72 @@ class ExpandableTextView @JvmOverloads constructor(
                 else -> maxLines
             }
         }
+    }
+
+    private fun animateHeightTransition() {
+        val expanding = !isExpanded
+        val startHeight = height
+
+        isExpanded = expanding
+        configureMaxLines()
+        setEllipsizedText(expanding)
+
+        measure(
+            MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+        )
+        val endHeight = measuredHeight
+
+        if (startHeight == endHeight) return //
+
+        val duration = mAnimationDuration?.toLong() ?: DEFAULT_ANIM_DURATION.toLong()
+
+        val animator = ValueAnimator.ofInt(startHeight, endHeight).apply {
+            this.duration = duration
+            interpolator = DecelerateInterpolator()
+
+            addUpdateListener { animation ->
+                val value = animation.animatedValue as Int
+                layoutParams.height = value
+                requestLayout()
+
+                clipBounds = Rect(0, 0, width, value)
+            }
+
+            addListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator) {
+                    visibility = View.VISIBLE
+                    if (fadeAnimationEnabled) {
+                        alpha = 0f
+                        animate().alpha(1f).setDuration(duration / 2).start()
+                    } else {
+                        alpha = 1f
+                    }
+                }
+
+                override fun onAnimationEnd(animation: Animator) {
+                    layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                    requestLayout()
+                    clipBounds = null
+                }
+
+                override fun onAnimationCancel(animation: Animator) {
+                    clipBounds = null
+                }
+
+                override fun onAnimationRepeat(animation: Animator) {}
+            })
+        }
+
+        animator.start()
+    }
+
+    private fun showPopupText() {
+        AlertDialog.Builder(context)
+            .setTitle("")
+            .setMessage(initialText)
+            .setNegativeButton(android.R.string.ok, null)
+            .show()
     }
 
     override fun setText(text: CharSequence?, type: BufferType?) {
@@ -208,11 +232,15 @@ class ExpandableTextView @JvmOverloads constructor(
         return this
     }
 
+    fun setFadeAnimationEnabled(fadeAnimationEnabled: Boolean): ExpandableTextView {
+        this.fadeAnimationEnabled = fadeAnimationEnabled
+        return this
+    }
+
     fun toggle() {
         toggleExpandableTextView()
     }
 
-    //private functions
     init {
         context.obtainStyledAttributes(attrs, R.styleable.ExpandableTextView).apply {
             try {
@@ -225,6 +253,8 @@ class ExpandableTextView @JvmOverloads constructor(
                 isExpanded = getBoolean(R.styleable.ExpandableTextView_isExpanded, false)
                 mEllipsizeTextColor = getColor(R.styleable.ExpandableTextView_ellipsizeTextColor, Color.BLUE)
                 expandType = getInt(R.styleable.ExpandableTextView_expandType, EXPAND_TYPE_DEFAULT)
+                fadeAnimationEnabled = getBoolean(R.styleable.ExpandableTextView_fadeAnimationEnabled, true)
+
             } finally {
                 this.recycle()
             }
@@ -289,34 +319,11 @@ class ExpandableTextView @JvmOverloads constructor(
     }
 
     private fun setForeground(isExpanded: Boolean) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            foreground = GradientDrawable(BOTTOM_TOP, intArrayOf(foregroundColor!!, Color.TRANSPARENT))
-            foreground.alpha = if (isExpanded) {
-                MIN_VALUE_ALPHA
-            } else {
-                MAX_VALUE_ALPHA
-            }
-        }
-    }
-
-    private fun animationSet(startHeight: Int, endHeight: Int): AnimatorSet {
-        return AnimatorSet().apply {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                playTogether(
-                    ObjectAnimator.ofInt(
-                        this,
-                        ANIMATION_PROPERTY_MAX_HEIGHT,
-                        startHeight,
-                        endHeight
-                    ),
-                    ObjectAnimator.ofInt(
-                        this@ExpandableTextView.foreground,
-                        ANIMATION_PROPERTY_ALPHA,
-                        foreground.alpha,
-                        MAX_VALUE_ALPHA - foreground.alpha
-                    )
-                )
-            }
+        foreground = GradientDrawable(BOTTOM_TOP, intArrayOf(foregroundColor!!, Color.TRANSPARENT))
+        foreground.alpha = if (isExpanded) {
+            MIN_VALUE_ALPHA
+        } else {
+            MAX_VALUE_ALPHA
         }
     }
 
@@ -340,11 +347,8 @@ class ExpandableTextView @JvmOverloads constructor(
         }
 
     companion object {
-        const val TAG = "ExpandableTextView"
         const val MAX_VALUE_ALPHA = 255
         const val MIN_VALUE_ALPHA = 0
-        const val ANIMATION_PROPERTY_MAX_HEIGHT = "maxHeight"
-        const val ANIMATION_PROPERTY_ALPHA = "alpha"
     }
 }
 
